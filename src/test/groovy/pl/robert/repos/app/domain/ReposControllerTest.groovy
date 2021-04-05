@@ -62,7 +62,7 @@ class ReposControllerTest {
         Response response = given().when()
                 .get('/repositories/RobertKrzywina?sort=' + sortingField + ',asc')
                 .then().statusCode(200).extract().response()
-        List<String> jsonResponse = response.jsonPath().getList('stargazers_count')
+        List<String> jsonResponse = response.jsonPath().getList(sortingField)
 
         Assert.assertTrue(Ordering.natural().isOrdered(jsonResponse))
     }
@@ -74,7 +74,7 @@ class ReposControllerTest {
         Response response = given().when()
                 .get('/repositories/RobertKrzywina?sort=' + sortingField + ',desc')
                 .then().statusCode(200).extract().response()
-        List<String> jsonResponse = response.jsonPath().getList('stargazers_count').reverse()
+        List<String> jsonResponse = response.jsonPath().getList(sortingField).reverse()
 
         Assert.assertTrue(Ordering.natural().isOrdered(jsonResponse))
     }

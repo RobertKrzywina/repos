@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ReposDto {
 
     @JsonProperty("fullName")
-    private final String name;
+    private final String fullName;
 
     @JsonProperty("description")
     private final String description;
@@ -14,25 +14,25 @@ public class ReposDto {
     @JsonProperty("cloneUrl")
     private final String cloneUrl;
 
-    @JsonProperty("stargazers_count")
     private final int stars;
 
     @JsonProperty("createdAt")
     private final String createdAt;
 
     @JsonCreator
-    private ReposDto(@JsonProperty("name") String name,
+    private ReposDto(@JsonProperty("name") String fullName,
                      @JsonProperty("description") String description,
                      @JsonProperty("clone_url") String cloneUrl,
                      @JsonProperty("stargazers_count") int stars,
                      @JsonProperty("created_at") String createdAt) {
-        this.name = name;
+        this.fullName = fullName;
         this.description = description;
         this.cloneUrl = cloneUrl;
         this.stars = stars;
         this.createdAt = createdAt;
     }
 
+    @JsonProperty("stars")
     public int getStars() {
         return stars;
     }
