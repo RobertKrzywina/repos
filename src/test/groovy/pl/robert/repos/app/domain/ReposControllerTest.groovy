@@ -4,36 +4,18 @@ import com.google.common.collect.Ordering
 import com.jayway.restassured.response.Response
 import org.junit.Assert
 import org.junit.Test
-import org.junit.jupiter.api.BeforeEach
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.context.WebApplicationContext
-import pl.robert.repos.app.ReposController
+import pl.robert.repos.app.shared.BaseTest
 
 import static com.jayway.restassured.RestAssured.given
 
-@WebMvcTest(ReposController.class)
-class ReposControllerTest {
-
-    @Autowired
-    private WebApplicationContext context
-
-    @Autowired
-    private MockMvc mockMvc
-
-    @BeforeEach
-    void setupSpec() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build()
-    }
+class ReposControllerTest extends BaseTest {
 
     @Test
     void 'Should find all repositories by existing owner'() {
         String existingOwner = 'RobertKrzywina'
 
         given().when()
-                .get('/repositories/' + existingOwner)
+                .get(uri + '/repositories/' + existingOwner)
                 .then().statusCode(200)
     }
 
@@ -42,7 +24,7 @@ class ReposControllerTest {
         String notExistingOwner = UUID.randomUUID().toString()
 
         given().when()
-                .get('/repositories/' + notExistingOwner)
+                .get(uri + '/repositories/' + notExistingOwner)
                 .then().statusCode(404)
     }
 
@@ -51,7 +33,7 @@ class ReposControllerTest {
         String sortingField = 'fullName'
 
         given().when()
-                .get('/repositories/RobertKrzywina?sort=' + sortingField + ',asc')
+                .get(uri + '/repositories/RobertKrzywina?sort=' + sortingField + ',asc')
                 .then().statusCode(200).extract().response()
     }
 
@@ -60,7 +42,7 @@ class ReposControllerTest {
         String sortingField = 'stars'
 
         Response response = given().when()
-                .get('/repositories/RobertKrzywina?sort=' + sortingField + ',asc')
+                .get(uri + '/repositories/RobertKrzywina?sort=' + sortingField + ',asc')
                 .then().statusCode(200).extract().response()
         List<String> jsonResponse = response.jsonPath().getList(sortingField)
 
@@ -72,7 +54,7 @@ class ReposControllerTest {
         String sortingField = 'stars'
 
         Response response = given().when()
-                .get('/repositories/RobertKrzywina?sort=' + sortingField + ',desc')
+                .get(uri + '/repositories/RobertKrzywina?sort=' + sortingField + ',desc')
                 .then().statusCode(200).extract().response()
         List<String> jsonResponse = response.jsonPath().getList(sortingField).reverse()
 

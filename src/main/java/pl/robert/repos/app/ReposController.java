@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/repositories")
 @AllArgsConstructor
-public class ReposController {
+class ReposController {
 
     private final ReposFacade facade;
 
